@@ -7,6 +7,24 @@
     text-transform: uppercase;
     text-align: center; 
 } 
+body:before, body:after {
+    content: "";
+    position: fixed;
+    background: purple;
+    left: 0;
+    right: 0;
+    height: 30px;
+}
+body:before {
+    top: 0;
+}
+body:after {
+    bottom: 0;
+}
+body {
+    border-left: 30px solid purple;
+    border-right: 30px solid purple;  
+}
 </style></head>
 <body> 
 <p id="name">Ranjan Pradeep</p>
