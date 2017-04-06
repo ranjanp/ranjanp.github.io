@@ -66,10 +66,10 @@ function update() {
     shouldResize = false;
   }
 
-  grid.position.z = (grid.position.z + 10) % 100;
-  boxes[0].rotation.y  = (boxes[0].rotation.y - 0.05) % (2*Math.PI);
-  boxes[1].rotation.x  = (boxes[1].rotation.x - 0.05) % (2*Math.PI);
-  boxes[2].rotation.z  = (boxes[2].rotation.z - 0.05) % (2*Math.PI);
+  grid.position.z = (grid.position.z + 5) % 100;
+  boxes[0].rotation.y  = (boxes[0].rotation.y - 0.025) % (2*Math.PI);
+  boxes[1].rotation.x  = (boxes[1].rotation.x - 0.025) % (2*Math.PI);
+  boxes[2].rotation.z  = (boxes[2].rotation.z - 0.025) % (2*Math.PI);
   renderer.render(scene, camera);
   requestAnimationFrame(update);
 }
