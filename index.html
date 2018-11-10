@@ -67,16 +67,18 @@
 
     function init()
     {      
+      // create a temporary canvas
       const tempCanvas = document.createElement('canvas');
       tempCanvas.width = canvas.width;
       tempCanvas.height = canvas.height;
       
+      // draw 'ranjan' on it
       const tempCanvasCtx = tempCanvas.getContext('2d');
       tempCanvasCtx.font="300px Helvetica"
       tempCanvasCtx.textAlign="center";
-
       tempCanvasCtx.fillText(txt, canvas.width/2, canvas.height/2, canvas.width);
       
+      // read image data to create pixels
       const imageData=tempCanvasCtx.getImageData(0,0,canvas.width,canvas.height);
       for(let x=0; x<imageData.width; x+=1)
       {
@@ -96,6 +98,7 @@
 
     async function timer()
     {
+      
       await pixels.forEach((pixel) => pixel.move());        
       await draw();
       setTimeout(timer,10);
