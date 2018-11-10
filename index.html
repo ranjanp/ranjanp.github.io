@@ -1,11 +1,126 @@
-<!DOCTYPE html>
 <html>
-<head><style>
 
-</style></head>
+<head>
+  <title>
+    ranjan
+  </title>
+</head>
+
 <body>
-<div id='container'></div>
-<script src='three.min.js'></script>
-<script src='world.js'></script>
-hi! i'm ranjan pradeep. you've reached my home on the web! thank you for visiting, stay as long as you'd like.</body>
+  <canvas id="canvas" onmousemove="interact(event);">
+    hi! i'm ranjan pradeep. you've reached my home on the web! thank you for visiting, stay as long as you'd like.
+  </canvas>
+  <style type="text/css">
+    body { 
+      overflow: hidden;
+    }
+  </style>
+  <script type="text/javascript">  
+    const pixels = new Set();
+    const canvas = document.getElementById('canvas');
+    const cursor = {x : -1, y : -1 };
+    const txt = "ranjan";
+
+    function interact(event)
+    {
+      cursor.x = event.clientX - canvas.offsetLeft;
+      cursor.y = event.clientY - canvas.offsetTop;
+    }
+    
+    class Pixel { 
+      constructor(x,y) { 
+        this.home = { x , y };
+        this.current = { x : Math.random()*canvas.width, y : Math.random()*canvas.height };
+        this.velocity = { x : 0, y : 0 };
+      }
+
+      cursorEffect() {
+          const cursorDistance = { x : this.current.x - cursor.x, y : this.current.y - cursor.y };
+          const straightLineDistance = Math.sqrt(Math.pow(cursorDistance.x, 2) + Math.pow(cursorDistance.y, 2));
+          return { 
+            force : 100 / straightLineDistance,
+            angle : Math.atan2(cursorDistance.x, cursorDistance.y)
+          }
+      }
+
+      homeEffect() { 
+        const homeDistance = { x : this.home.x - this.current.x, y : this.home.y - this.current.y }
+        const straightLineDistance = Math.sqrt(Math.pow(homeDistance.x, 2) + Math.pow(homeDistance.y, 2));
+        return {
+          force : 0.01 * straightLineDistance,
+          angle : Math.atan2(homeDistance.y, homeDistance.x)
+        }
+      }
+
+      move() { 
+        this.velocity.x += this.homeEffect().force * Math.cos(this.homeEffect().angle) + this.cursorEffect().force * Math.cos(this.cursorEffect().angle);
+        this.velocity.y += this.homeEffect().force * Math.sin(this.homeEffect().angle) + this.cursorEffect().force * Math.sin(this.cursorEffect().angle);
+        
+        //lower speed a little each time
+        this.velocity.x *= 0.95;
+        this.velocity.y *= 0.95;
+        
+        this.current.x += this.velocity.x;
+        this.current.y += this.velocity.y;
+      }
+    }
+
+    function init()
+    {      
+      const tempCanvas = document.createElement('canvas');
+      tempCanvas.width = canvas.width;
+      tempCanvas.height = canvas.height;
+      
+      const tempCanvasCtx = tempCanvas.getContext('2d');
+      tempCanvasCtx.font="300px Helvetica"
+      tempCanvasCtx.textAlign="center";
+
+      tempCanvasCtx.fillText(txt, canvas.width/2, canvas.height/2, canvas.width);
+      
+      const imageData=tempCanvasCtx.getImageData(0,0,canvas.width,canvas.height);
+      for(let x=0; x<imageData.width; x+=1)
+      {
+        for(let y=0; y<imageData.height; y+=1)
+        {
+          // add pixel if alpha value > 128
+          if(imageData.data[(y*imageData.width + x)*4 + 3] > 128)
+          {
+            pixels.add(new Pixel(x,y));
+          }
+        }
+      }
+
+      delete tempCanvasCtx;
+      delete tempCanvas;
+    }
+
+    async function timer()
+    {
+      await pixels.forEach((pixel) => pixel.move());        
+      await draw();
+      setTimeout(timer,10);
+    }
+    
+    function resize()
+    {
+      canvas.width=document.body.clientWidth;
+      canvas.height=document.body.clientHeight;
+    }
+
+    function draw()
+    {
+      const ctx = canvas.getContext('2d');
+      const imageData=ctx.createImageData(canvas.width,canvas.height);
+      pixels.forEach((pixel) =>
+        // set alpha value to 255
+        imageData.data[(Math.floor(pixel.current.y)*imageData.width + Math.floor(pixel.current.x))*4 + 3] = 255
+      );
+      ctx.putImageData(imageData,0,0);
+    }
+
+    resize();
+    init();
+    timer();
+  </script>
+  </body>
 </html>
