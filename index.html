@@ -58,7 +58,6 @@
         this.velocity.x += this.homeEffect().force * Math.cos(this.homeEffect().angle) + this.cursorEffect().force * Math.cos(this.cursorEffect().angle);
         this.velocity.y += this.homeEffect().force * Math.sin(this.homeEffect().angle) + this.cursorEffect().force * Math.sin(this.cursorEffect().angle);
         
-        //lower speed a little each time
         this.velocity.x *= 0.95;
         this.velocity.y *= 0.95;
         
@@ -69,24 +68,20 @@
 
     function init()
     {      
-      // create a temporary canvas
       const tempCanvas = document.createElement('canvas');
       tempCanvas.width = canvas.width;
       tempCanvas.height = canvas.height;
       
-      // draw 'ranjan' on it
       const tempCanvasCtx = tempCanvas.getContext('2d');
       tempCanvasCtx.font="300px Times"
       tempCanvasCtx.textAlign="center";
       tempCanvasCtx.fillText(txt, canvas.width/2, canvas.height/2, canvas.width);
       
-      // read image data to create pixels
       const imageData=tempCanvasCtx.getImageData(0,0,canvas.width,canvas.height);
       for(let x=0; x<imageData.width; x+=1)
       {
         for(let y=0; y<imageData.height; y+=1)
         {
-          // add pixel if alpha value > 128
           if(imageData.data[(y*imageData.width + x)*4 + 3] > 128)
           {
             pixels.add(new Pixel(x,y));
@@ -117,7 +112,6 @@
       const ctx = canvas.getContext('2d');
       const imageData=ctx.createImageData(canvas.width,canvas.height);
       pixels.forEach((pixel) =>
-        // set alpha value to 255
         imageData.data[(Math.floor(pixel.current.y)*imageData.width + Math.floor(pixel.current.x))*4 + 3] = 255
       );
       ctx.putImageData(imageData,0,0);
