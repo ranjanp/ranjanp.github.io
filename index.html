@@ -19,7 +19,9 @@
     const pixels = new Set();
     const canvas = document.getElementById('canvas');
     const cursor = {x : -1, y : -1 };
-    const txt = "ranjan";
+    
+    const urlParams = new URLSearchParams(window.location.search);
+    const txt = urlParams.get('txt') ? urlParams.get('txt') ? "ranjan";
 
     function interact(event)
     {
