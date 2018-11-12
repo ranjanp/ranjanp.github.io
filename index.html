@@ -15,8 +15,8 @@
       overflow: hidden;
     }
   </style>
-  <script type="text/javascript">  
-    const pixels = new Set();    
+  <script type="text/javascript">
+    const pixels = new Set();
     const canvas = document.getElementById('canvas');
     canvas.width = document.body.clientWidth;
     canvas.height = document.body.clientHeight;
@@ -97,7 +97,7 @@
     async function timer()
     {
       
-      await pixels.forEach((pixel) => pixel.move());        
+      await pixels.forEach((pixel) => pixel.move());
       await draw();
       setTimeout(timer,10);
     }
