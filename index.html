@@ -16,10 +16,11 @@
     }
   </style>
   <script type="text/javascript">  
-    const pixels = new Set();
+    const pixels = new Set();    
     const canvas = document.getElementById('canvas');
-    const cursor = {x : -1, y : -1 };
-    
+    canvas.width = document.body.clientWidth;
+    canvas.height = document.body.clientHeight;
+    const cursor = { x : -1, y : -1 };
     const urlParams = new URLSearchParams(window.location.search);
     const txt = urlParams.get('txt') ? urlParams.get('txt') : "ranjan";
 
@@ -37,12 +38,12 @@
       }
 
       get cursorEffect() {
-          const cursorDistance = { x : this.current.x - cursor.x, y : this.current.y - cursor.y };
-          const straightLineDistance = Math.sqrt(Math.pow(cursorDistance.x, 2) + Math.pow(cursorDistance.y, 2));
-          return { 
-            force : 100 / straightLineDistance,
-            angle : Math.atan2(cursorDistance.x, cursorDistance.y)
-          }
+        const cursorDistance = { x : this.current.x - cursor.x, y : this.current.y - cursor.y };
+        const straightLineDistance = Math.sqrt(Math.pow(cursorDistance.x, 2) + Math.pow(cursorDistance.y, 2));
+        return { 
+          force : 100 / straightLineDistance,
+          angle : Math.atan2(cursorDistance.x, cursorDistance.y)
+        }
       }
 
       get homeEffect() { 
@@ -73,18 +74,18 @@
       tempCanvas.height = canvas.height;
       
       const tempCanvasCtx = tempCanvas.getContext('2d');
-      tempCanvasCtx.font="300px Times"
-      tempCanvasCtx.textAlign="center";
+      tempCanvasCtx.font = "300px Times"
+      tempCanvasCtx.textAlign = "center";
       tempCanvasCtx.fillText(txt, canvas.width/2, canvas.height/2, canvas.width);
       
-      const imageData=tempCanvasCtx.getImageData(0,0,canvas.width,canvas.height);
-      for(let x=0; x<imageData.width; x+=1)
+      const imageData = tempCanvasCtx.getImageData(0, 0, canvas.width, canvas.height);
+      for(let x = 0; x < imageData.width; x += 1)
       {
-        for(let y=0; y<imageData.height; y+=1)
+        for(let y = 0; y < imageData.height; y += 1)
         {
-          if(imageData.data[(y*imageData.width + x)*4 + 3] > 128)
+          if(imageData.data[(y * imageData.width + x) * 4 + 3] > 128)
           {
-            pixels.add(new Pixel(x,y));
+            pixels.add(new Pixel(x, y));
           }
         }
       }
@@ -100,24 +101,17 @@
       await draw();
       setTimeout(timer,10);
     }
-    
-    function resize()
-    {
-      canvas.width=document.body.clientWidth;
-      canvas.height=document.body.clientHeight;
-    }
 
     function draw()
     {
       const ctx = canvas.getContext('2d');
       const imageData=ctx.createImageData(canvas.width,canvas.height);
       pixels.forEach((pixel) =>
-        imageData.data[(Math.floor(pixel.current.y)*imageData.width + Math.floor(pixel.current.x))*4 + 3] = 255
+        imageData.data[(Math.floor(pixel.current.y) * imageData.width + Math.floor(pixel.current.x)) * 4 + 3] = 255
       );
-      ctx.putImageData(imageData,0,0);
+      ctx.putImageData(imageData, 0, 0);
     }
 
-    resize();
     init();
     timer();
   </script>
