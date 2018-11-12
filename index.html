@@ -94,12 +94,12 @@
       delete tempCanvas;
     }
 
-    async function timer()
+    function loop()
     {
       
-      await pixels.forEach((pixel) => pixel.move());
-      await draw();
-      setTimeout(timer, 0);
+      pixels.forEach((pixel) => pixel.move());
+      draw();
+      setTimeout(loop, 0);
     }
 
     function draw()
@@ -113,7 +113,7 @@
     }
 
     init();
-    timer();
+    loop();
   </script>
   </body>
 </html>
