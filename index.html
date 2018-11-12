@@ -99,7 +99,7 @@
       
       pixels.forEach((pixel) => pixel.move());
       draw();
-      setTimeout(loop, 0);
+      requestAnimationFrame(loop);
     }
 
     function draw()
