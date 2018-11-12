@@ -36,7 +36,7 @@
         this.velocity = { x : 0, y : 0 };
       }
 
-      cursorEffect() {
+      get cursorEffect() {
           const cursorDistance = { x : this.current.x - cursor.x, y : this.current.y - cursor.y };
           const straightLineDistance = Math.sqrt(Math.pow(cursorDistance.x, 2) + Math.pow(cursorDistance.y, 2));
           return { 
@@ -45,7 +45,7 @@
           }
       }
 
-      homeEffect() { 
+      get homeEffect() { 
         const homeDistance = { x : this.home.x - this.current.x, y : this.home.y - this.current.y }
         const straightLineDistance = Math.sqrt(Math.pow(homeDistance.x, 2) + Math.pow(homeDistance.y, 2));
         return {
@@ -55,8 +55,8 @@
       }
 
       move() { 
-        this.velocity.x += this.homeEffect().force * Math.cos(this.homeEffect().angle) + this.cursorEffect().force * Math.cos(this.cursorEffect().angle);
-        this.velocity.y += this.homeEffect().force * Math.sin(this.homeEffect().angle) + this.cursorEffect().force * Math.sin(this.cursorEffect().angle);
+        this.velocity.x += this.homeEffect.force * Math.cos(this.homeEffect.angle) + this.cursorEffect.force * Math.cos(this.cursorEffect.angle);
+        this.velocity.y += this.homeEffect.force * Math.sin(this.homeEffect.angle) + this.cursorEffect.force * Math.sin(this.cursorEffect.angle);
         
         this.velocity.x *= 0.95;
         this.velocity.y *= 0.95;
