@@ -83,7 +83,7 @@
       {
         for(let y = 0; y < imageData.height; y += 1)
         {
-          if(imageData.data[(y * imageData.width + x) * 4 + 3] > 128)
+          if(imageData.data[(y * imageData.width + x) * 4 + 3] === 255)
           {
             pixels.add(new Pixel(x, y));
           }
