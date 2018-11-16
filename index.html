@@ -122,7 +122,7 @@
       for(let x = 0; x < canvas.width / size; x++) {
         for(let y = 0; y < canvas.height / size; y++) {
           hue = simplex.noise3D(size * x, size * y, frame) * 360;
-          ctx.fillStyle = 'hsl(' + hue + ', 100%, 90%)';
+          ctx.fillStyle = 'hsl(' + hue + ', 100%, 96%)';
           ctx.fillRect(size * x, size * y, size, size);
         }
       }
