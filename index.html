@@ -116,12 +116,12 @@
 
     function draw_background()
     {
-      const size = 200;
+      const size =  25;
       const ctx = canvas.getContext('2d');
       ctx.globalCompositeOperation = 'destination-over';
       for(let x = 0; x < canvas.width / size; x++) {
         for(let y = 0; y < canvas.height / size; y++) {
-          hue = simplex.noise3D(size * x, size * y, frame) * 360;
+          hue = simplex.noise3D(x, y, frame) * 360;
           ctx.fillStyle = 'hsl(' + hue + ', 100%, 96%)';
           ctx.fillRect(size * x, size * y, size, size);
         }
