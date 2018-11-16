@@ -121,7 +121,7 @@
       ctx.globalCompositeOperation = 'destination-over';
       for(let x = 0; x < canvas.width / size; x++) {
         for(let y = 0; y < canvas.height / size; y++) {
-          hue = simplex.noise3D(x / 100, y / 100, frame/100) * 360;
+          hue = simplex.noise3D(x / 500, y / 500, frame/500) * 360;
           ctx.fillStyle = 'hsl(' + hue + ', 100%, 95%)';
           ctx.fillRect(size * x, size * y, size, size);
         }
