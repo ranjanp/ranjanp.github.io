@@ -15,6 +15,7 @@
       margin: 0;
     }
   </style>
+  <script type ="text/javascript" src="./simplex-noise.html"></script>
   <script type="text/javascript">
     const pixels = new Set();
     const canvas = document.getElementById('canvas');
@@ -22,6 +23,8 @@
     canvas.height = document.body.clientHeight;
     const cursor = { x : -1, y : -1 };
     const txt = "ranjan";
+    let frame = 0;
+    let simplex = new SimplexNoise();
 
     function interact(event)
     {
@@ -97,6 +100,7 @@
     {
       pixels.forEach((pixel) => pixel.move());
       draw();
+      draw_background()
       requestAnimationFrame(loop);
     }
 
@@ -108,6 +112,21 @@
         imageData.data[(Math.floor(pixel.current.y) * imageData.width + Math.floor(pixel.current.x)) * 4 + 3] = 255
       );
       ctx.putImageData(imageData, 0, 0);
+    }
+
+    function draw_background()
+    {
+      const size = 200;
+      const ctx = canvas.getContext('2d');
+      ctx.globalCompositeOperation = 'destination-over';
+      for(let x = 0; x < canvas.width / size; x++) {
+        for(let y = 0; y < canvas.height / size; y++) {
+          hue = simplex.noise3D(size * x, size * y, frame) * 360;
+          ctx.fillStyle = 'hsl(' + hue + ', 100%, 90%)';
+          ctx.fillRect(size * x, size * y, size, size);
+        }
+      }
+      frame += 0.01;
     }
 
     init();
