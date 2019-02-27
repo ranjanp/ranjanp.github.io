@@ -7,7 +7,7 @@
 </head>
 
 <body>
-  <canvas id="canvas" onmousemove="interact(event);">
+  <canvas id="canvas" onmousemove="interact(event);" onclick="changecursor()">
     hi! i'm ranjan pradeep. you've reached my home on the web! thank you for visiting, stay as long as you'd like.
   </canvas>
   <style type="text/css">
@@ -15,7 +15,7 @@
       margin: 0;
     }
   </style>
-  <script type ="text/javascript" src="./simplex-noise.js"></script>
+  <script type ="text/javascript" src="./simplex-noise.html"></script>
   <script type="text/javascript">
     const pixels = new Set();
     const canvas = document.getElementById('canvas');
@@ -24,12 +24,21 @@
     const cursor = { x : -1, y : -1 };
     const txt = "ranjan";
     let frame = 0;
+    let x = 1;
     let simplex = new SimplexNoise();
 
     function interact(event)
     {
       cursor.x = event.clientX - canvas.offsetLeft;
       cursor.y = event.clientY - canvas.offsetTop;
+    }
+
+    function changecursor(event)
+    {
+      x++;
+      if (x === 3) {
+        x = 0;
+      }
     }
     
     class Pixel { 
@@ -39,27 +48,49 @@
         this.velocity = { x : 0, y : 0 };
       }
 
-      get cursorEffect() {
-        const cursorDistance = { x : this.current.x - cursor.x, y : this.current.y - cursor.y };
-        const straightLineDistance = Math.sqrt(Math.pow(cursorDistance.x, 2) + Math.pow(cursorDistance.y, 2));
+      coordinates(location) { 
+        const x = location.x - this.current.x;
+        const y = location.y - this.current.y;
         return { 
-          force : 100 / straightLineDistance,
-          angle : Math.atan2(cursorDistance.x, cursorDistance.y)
+          distance: Math.sqrt(Math.pow(x,2) + Math.pow(y,2)),
+          angle: Math.atan2(y, x)
+        };
+      }
+
+      get cursorEffect() {
+        const coordinates = this.coordinates(cursor);
+        let angle;
+        switch (x) {
+          case 0:
+            angle = coordinates.angle;
+            break;
+          case 1:
+            angle = - coordinates.angle;
+            break;
+          case 2:
+            angle = coordinates.angle - Math.PI;
+            break;
+        }
+
+        return { 
+          force : - 100 / coordinates.distance,
+          angle : angle
         }
       }
 
-      get homeEffect() { 
-        const homeDistance = { x : this.home.x - this.current.x, y : this.home.y - this.current.y }
-        const straightLineDistance = Math.sqrt(Math.pow(homeDistance.x, 2) + Math.pow(homeDistance.y, 2));
+      get homeEffect() {
+        const coordinates = this.coordinates(this.home)
         return {
-          force : straightLineDistance / 100,
-          angle : Math.atan2(homeDistance.y, homeDistance.x)
+          force : 0.01 * coordinates.distance,
+          angle : coordinates.angle
         }
       }
 
       move() { 
-        this.velocity.x += this.homeEffect.force * Math.cos(this.homeEffect.angle) + this.cursorEffect.force * Math.cos(this.cursorEffect.angle);
-        this.velocity.y += this.homeEffect.force * Math.sin(this.homeEffect.angle) + this.cursorEffect.force * Math.sin(this.cursorEffect.angle);
+        const homeEffect = this.homeEffect; 
+        const cursorEffect = this.cursorEffect;
+        this.velocity.x += homeEffect.force * Math.cos(homeEffect.angle) + cursorEffect.force * Math.cos(cursorEffect.angle);
+        this.velocity.y += homeEffect.force * Math.sin(homeEffect.angle) + cursorEffect.force * Math.sin(cursorEffect.angle);
         
         this.velocity.x *= 0.95;
         this.velocity.y *= 0.95;
@@ -76,21 +107,15 @@
       tempCanvas.height = canvas.height;
       
       const tempCanvasCtx = tempCanvas.getContext('2d');
-      tempCanvasCtx.font = "300px Times"
+      tempCanvasCtx.font = "400px Times"
       tempCanvasCtx.textAlign = "center";
       tempCanvasCtx.fillText(txt, canvas.width/2, canvas.height/2, canvas.width);
       
       const imageData = tempCanvasCtx.getImageData(0, 0, canvas.width, canvas.height);
       for(let x = 0; x < imageData.width; x += 1)
-      {
         for(let y = 0; y < imageData.height; y += 1)
-        {
           if(imageData.data[(y * imageData.width + x) * 4 + 3] === 255)
-          {
             pixels.add(new Pixel(x, y));
-          }
-        }
-      }
 
       delete tempCanvasCtx;
       delete tempCanvas;
@@ -116,17 +141,17 @@
 
     function draw_background()
     {
-      const size =  100;
+      const size = 200;
       const ctx = canvas.getContext('2d');
       ctx.globalCompositeOperation = 'destination-over';
       for(let x = 0; x < canvas.width / size; x++) {
         for(let y = 0; y < canvas.height / size; y++) {
-          hue = simplex.noise3D(x / 40, y / 40, frame / 250) * 360;
-          ctx.fillStyle = 'hsl(' + hue + ', 100%, 95%)';
+          hue = simplex.noise3D(size * x, size * y, frame) * 360;
+          ctx.fillStyle = 'hsl(' + hue + ', 100%, 96%)';
           ctx.fillRect(size * x, size * y, size, size);
         }
       }
-      frame++;
+      frame += 0.01;
     }
 
     init();
