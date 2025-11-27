@@ -1,0 +1,127 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #fafafa;
+    font-family: sans-serif;
+    color: #262626;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* Navbar */
+.navbar {
+    background-color: white;
+    border-bottom: 1px solid #dbdbdb;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 54px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+}
+
+.nav-content {
+    width: 100%;
+    max-width: 935px;
+    padding: 0 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+/* Main Layout */
+.container {
+    max-width: 935px;
+    margin: 80px auto 0;
+    padding: 0 20px;
+}
+
+/* Profile Section */
+.profile {
+    display: flex;
+    align-items: center;
+    margin-bottom: 40px;
+    padding-bottom: 40px;
+    border-bottom: 1px solid #dbdbdb;
+}
+
+.profile-pic {
+    margin-right: 50px;
+}
+
+.profile-pic img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1px solid #dbdbdb;
+    padding: 2px;
+}
+
+.profile-info h1 {
+    font-weight: 300;
+    font-size: 28px;
+    margin-bottom: 10px;
+}
+
+/* Gallery Grid */
+.gallery {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 28px;
+}
+
+.gallery-item {
+    position: relative;
+    display: block;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+}
+
+.gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.gallery-item:hover {
+    opacity: 0.8;
+}
+
+/* --- Single Post Page Styles --- */
+.card {
+    background: white;
+    border: 1px solid #dbdbdb;
+    max-width: 600px;
+    margin: 0 auto 50px; /* Center it */
+}
+
+.post-image img {
+    width: 100%;
+    display: block;
+}
+
+.post-date {
+    color:#888;
+    font-size: 0.9rem;
+    margin-bottom: 10px; 
+}
+
+.post-details {
+    padding: 15px;
+}
