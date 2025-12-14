@@ -7,12 +7,29 @@
 </head>
 
 <body>
+  <a href="blog/index.html" class="blog-button">blog</a>
   <canvas id="canvas" onmousemove="interact(event);" onclick="changecursor()">
     hi! i'm ranjan pradeep. you've reached my home on the web! thank you for visiting, stay as long as you'd like.
   </canvas>
   <style type="text/css">
     body { 
       margin: 0;
+      font-family: sans-serif;
+    }
+    .blog-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      padding: 10px 20px;
+      background-color: white;
+      border: 1px solid #dbdbdb;
+      color: #262626;
+      text-decoration: none;
+      z-index: 10;
+      border-radius: 4px;
+    }
+    .blog-button:hover {
+      background-color: #fafafa;
     }
   </style>
   <script type ="text/javascript" src="./simplex-noise.js"></script>
