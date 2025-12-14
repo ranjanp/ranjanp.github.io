@@ -125,3 +125,17 @@ a {
 .post-details {
     padding: 15px;
 }
+
+/* Panorama View */
+.post-image.panorama-view {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.post-image.panorama-view img {
+    max-width: none;
+    height: 60vh;
+    width: auto;
+    display: block;
+}
